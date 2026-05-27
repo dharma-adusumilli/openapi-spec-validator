@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "openapi-spec-validator"
+version = "0.1.0"
+description = "CLI tool for validating OpenAPI specs against OWASP API Security Top 10 and governance standards"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Dharma Adusumilli"}
+]
+keywords = ["openapi", "validation", "owasp", "security", "api"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP",
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.0,<3.0",
+    "rich>=13.0,<14.0",
+    "httpx>=0.24,<1.0",
+    "PyYAML>=6.0,<7.0",
+    "jsonschema>=4.0,<5.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0,<8.0",
+    "pytest-cov>=4.0,<5.0",
+    "ruff>=0.1,<1.0",
+]
+
+[project.scripts]
+osv = "openapi_spec_validator.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/dharma-adusumilli/openapi-spec-validator"
+Documentation = "https://github.com/dharma-adusumilli/openapi-spec-validator#readme"
+Repository = "https://github.com/dharma-adusumilli/openapi-spec-validator"
+Issues = "https://github.com/dharma-adusumilli/openapi-spec-validator/issues"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+select = ["E", "F", "W", "I"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=openapi_spec_validator --cov-report=term-missing"
+
+[tool.coverage.run]
+source = ["openapi_spec_validator"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+]
