@@ -182,23 +182,13 @@ class APIImproperAssetManagement(Rule):
         return findings
 
 
-class APIInsufficientLoggingMonitoring(Rule):
-    """OWASP API10: Insufficient Logging & Monitoring."""
-
-    def __init__(self):
-        super().__init__(
-            rule_id="OWASP_API_10",
-            name="Insufficient Logging & Monitoring",
-            description="API lacks logging and monitoring",
-        )
-
-    def check(self, spec: dict) -> list[Finding]:
-        findings = []
-        return findings
-
-
 def get_rules() -> list[Rule]:
-    """Return all OWASP API Security Top 10 rules."""
+    """Return the OWASP API Security rules that are checkable from a static spec.
+
+    API10 (Insufficient Logging & Monitoring) is intentionally omitted: it
+    describes runtime/operational behavior that cannot be inferred from an
+    OpenAPI document.
+    """
     return [
         APIBrokenObjectLevelAuth(),
         APIBrokenUserAuthentication(),
@@ -209,5 +199,4 @@ def get_rules() -> list[Rule]:
         APIWrongContentType(),
         APISQLInjection(),
         APIImproperAssetManagement(),
-        APIInsufficientLoggingMonitoring(),
     ]
