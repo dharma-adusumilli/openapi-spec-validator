@@ -1,8 +1,10 @@
 """Tests for report generators."""
 
 import json
-from datetime import datetime
-from openapi_spec_validator.models.report import ValidationReport, Finding
+
+import pytest
+
+from openapi_spec_validator.models.report import Finding, ValidationReport
 from openapi_spec_validator.reporters import json_reporter, markdown_reporter
 
 

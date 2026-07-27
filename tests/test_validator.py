@@ -1,6 +1,7 @@
 """Tests for the validator module."""
 
 import pytest
+
 from openapi_spec_validator.validator import SpecValidator
 
 
@@ -8,10 +9,18 @@ from openapi_spec_validator.validator import SpecValidator
 def valid_spec():
     return {
         "openapi": "3.0.0",
-        "info": {"title": "Test API", "version": "1.0.0", "contact": {}, "license": {}},
+        "info": {
+            "title": "Test API",
+            "version": "1.0.0",
+            "contact": {"email": "support@example.com"},
+            "license": {"name": "MIT"},
+        },
         "paths": {
             "/users": {
-                "get": {"security": [{"bearerAuth": []}], "responses": {"200": {}}}
+                "get": {
+                    "security": [{"bearerAuth": []}],
+                    "responses": {"200": {}, "429": {"description": "Too Many Requests"}},
+                }
             }
         },
         "security": [{"bearerAuth": []}],
