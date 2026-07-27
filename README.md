@@ -52,20 +52,21 @@ optional arguments:
 
 ## OWASP API Security Top 10
 
-This tool validates OpenAPI specifications against all 10 OWASP API Security risks:
+This tool statically analyzes an OpenAPI document against the OWASP API Security Top 10. 9 of the 10 risks are checked; **Insufficient Logging & Monitoring (API10)** is intentionally omitted because it describes runtime/operational behavior that cannot be inferred from a spec document alone.
 
-| # | Rule | Description |
-|---|------|-------------|
-| 1 | **Broken Object Level Authorization** | Endpoints lack proper authorization checks on object references |
-| 2 | **Broken User Authentication** | Authentication mechanisms are broken or missing |
-| 3 | **Excessive Data Exposure** | API exposes more data than necessary |
-| 4 | **Lack of Resources & Throttling** | API lacks rate limiting and resource controls |
-| 5 | **Broken Function Level Authorization** | Endpoints lack proper authorization checks |
-| 6 | **Mass Assignment** | Binding of client data to data model without filtering |
-| 7 | **Cross-Site Scripting (XSS)** | API vulnerable to XSS attacks |
-| 8 | **SQL Injection** | API vulnerable to SQL injection |
-| 9 | **Improper Assets Management** | Unversioned or abandoned API endpoints |
-| 10 | **Insufficient Logging & Monitoring** | API lacks logging and monitoring |
+| # | Rule ID | Rule | What is checked |
+|---|---------|------|------------------|
+| 1 | `OWASP_API_01` | **Broken Object Level Authorization** | `GET`/`PUT`/`DELETE` on `{id}`-style paths with no `security` requirement |
+| 2 | `OWASP_API_02` | **Broken User Authentication** | No global `security` scheme defined for the API |
+| 3 | `OWASP_API_03` | **Excessive Data Exposure** | 2xx response schemas that expose sensitive-looking fields (`password`, `token`, `ssn`, etc.) |
+| 4 | `OWASP_API_04` | **Lack of Resources & Rate Limiting** | No operation defines a `429` response; list endpoints with no pagination parameters |
+| 5 | `OWASP_API_05` | **Broken Function Level Authorization** | Privileged-looking paths (`/admin`, `/internal`, `/debug`, `/manage`) with no `security` requirement |
+| 6 | `OWASP_API_06` | **Mass Assignment** | Request bodies whose schema doesn't set `additionalProperties: false` |
+| 7 | `OWASP_API_07` | **Security Misconfiguration** | Plaintext HTTP servers, API keys sent via query string, HTTP Basic auth |
+| 8 | `OWASP_API_08` | **Injection** | Unconstrained string query parameters (no `enum`/`pattern`/`format`) |
+| 9 | `OWASP_API_09` | **Improper Assets Management** | Missing API version in `info` |
+
+Rules 7 and 8 are renamed from earlier drafts ("XSS" and "SQL Injection") to match OWASP's actual API Security Top 10 naming — **Security Misconfiguration** and **Injection** — since the original names didn't reflect what can be checked from a static spec.
 
 ## Governance Rules
 

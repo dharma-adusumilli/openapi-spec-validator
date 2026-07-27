@@ -2,6 +2,8 @@ openapi: 3.0.0
 info:
   title: Invalid API Example
   version: 1.0.0
+servers:
+  - url: http://api.example.com
 paths:
   /users/{id}:
     get:
@@ -10,6 +12,51 @@ paths:
       responses:
         "200":
           description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  password:
+                    type: string
+  /users:
+    get:
+      summary: Search users (unconstrained query param, no pagination)
+      operationId: searchUsers
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: q
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+    post:
+      summary: Create user (open request schema)
+      operationId: createUser
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "201":
+          description: Created
   /admin/delete:
     delete:
       summary: Delete resources
@@ -17,3 +64,8 @@ paths:
       responses:
         "204":
           description: Deleted
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer

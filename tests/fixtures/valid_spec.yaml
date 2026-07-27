@@ -8,6 +8,8 @@ info:
     email: support@example.com
   license:
     name: MIT
+servers:
+  - url: https://api.example.com
 paths:
   /users:
     get:
@@ -15,6 +17,11 @@ paths:
       operationId: listUsers
       security:
         - bearerAuth: []
+      parameters:
+        - name: limit
+          in: query
+          schema:
+            type: integer
       responses:
         "200":
           description: Successful response
@@ -24,6 +31,11 @@ paths:
                 type: array
                 items:
                   type: object
+                  properties:
+                    id:
+                      type: string
+        "429":
+          description: Too Many Requests
 components:
   securitySchemes:
     bearerAuth:
